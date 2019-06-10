@@ -1,0 +1,34 @@
+Get source code and prebuilt images
+   1) Linux next (https://www.kernel.org/doc/man-pages/linux-next.html)
+   
+        git clone https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git linux-next
+        cd linux-next
+        git remote add linux-next https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
+        
+        git checkout master 
+        git remote update
+   2) u-boot 
+       git clone http://git.denx.de/u-boot.git
+   
+   3) arm trusted firmware 
+       https://github.com/ARM-software/arm-trusted-firmware.git
+   4) files system
+        Ubuntu
+        OE 
+   5) FVP
+      FVP_Base_RevC-2xAEMv8A : 
+   6) gcc toolchain on ubuntu 19.04( aarch64 gcc 8.3)
+     
+   
+Build 
+  
+  1) u-boot 
+  2) arm trusted firmare 
+   make CROSS_COMPILE=aarch64-linux-gnu- PLAT=fvp FVP_HW_CONFIG_DTS=fdts/fvp-base-gicv3-psci-1t.dts DEBUG=1 \
+       BL33=../u-boot/output/vexpress_aemv8a_semi/u-boot.bin  dtbs all fip
+   3) Linux kernel
+      make CROSS_COMPILE=aarch64-linux-gnu- O=out defconfig
+      make CROSS_COMPILE=aarch64-linux-gnu- O=out
+
+Run on Arm fast model
+    
