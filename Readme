@@ -20,9 +20,16 @@ Get source code and prebuilt images
    5) FVP
       FVP_Base_RevC-2xAEMv8A : 
    6) gcc toolchain on ubuntu 19.04( aarch64 gcc 8.3)
-     
+
+Alternative way to get code
+     MANIFEST= lsk or latest
+     BRANCH= 19.01 or master
+     repo init -u https://git.linaro.org/landing-teams/working/arm/manifest -b ${BRANCH} -m pinned-${MANIFEST}.xml
+     repo sync -j8
    
 Build 
+  sudo apt install gcc-9-aarch64-linux-gnu
+  
   1) busybox  
   2) u-boot 
   3) arm trusted firmare 
