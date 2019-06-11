@@ -35,4 +35,10 @@ Build
    5) Put together
 
 Run on Arm fast model
+   
+Debug on DS-5 debugger
+    add-symbol-file "/home/yupluo/work/dev_platform/arm-reference-platforms-fvp/linux/out/fvp/mobile_bb/vmlinux" EL1N:0x0
+    add-symbol-file "/home/yupluo/work/dev_platform/arm-reference-platforms-fvp/arm-tf/build/fvp/debug/bl31/bl31.elf" EL3:0x0
+    
+    discard-symbol-file
     
