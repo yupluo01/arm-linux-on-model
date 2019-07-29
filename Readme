@@ -35,6 +35,10 @@ Build
   3) arm trusted firmare 
    make CROSS_COMPILE=aarch64-linux-gnu- PLAT=fvp FVP_HW_CONFIG_DTS=fdts/fvp-base-gicv3-psci-1t.dts DEBUG=1 \
        BL33=../u-boot/output/vexpress_aemv8a_semi/u-boot.bin  dtbs all fip
+    
+    This step may not be necessary when running FVP_Base_RevC-2xAEMv8A
+       export DTB=fvp-base-aemv8a-aemv8a-t1.dtb
+    
    4) Linux kernel
       make CROSS_COMPILE=aarch64-linux-gnu- O=out defconfig
       make CROSS_COMPILE=aarch64-linux-gnu- O=out
