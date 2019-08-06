@@ -33,9 +33,11 @@ Build
   1) busybox  
   2) u-boot 
   3) arm trusted firmare 
-   make CROSS_COMPILE=aarch64-linux-gnu- PLAT=fvp FVP_HW_CONFIG_DTS=fdts/fvp-base-gicv3-psci-1t.dts DEBUG=1 \
+   make CROSS_COMPILE=aarch64-linux-gnu- PLAT=fvp FVP_HW_CONFIG_DTS=fdts/fvp-base-gicv3-psci-1t.dts DEBUG=1 BL33=../u-boot/output/vexpress_aemv8a_semi/u-boot.bin  dtbs all fip
+   
+    make CROSS_COMPILE=aarch64-linux-gnu- PLAT=fvp FVP_HW_CONFIG_DTS=fdts/fvp-base-gicv3-psci-dynamiq.dts DEBUG=1 \
        BL33=../u-boot/output/vexpress_aemv8a_semi/u-boot.bin  dtbs all fip
-    
+       
     This step may not be necessary when running FVP_Base_RevC-2xAEMv8A
        export DTB=fvp-base-aemv8a-aemv8a-t1.dtb
     
