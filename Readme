@@ -39,6 +39,18 @@ Build
     make CROSS_COMPILE=aarch64-linux-gnu- PLAT=fvp FVP_HW_CONFIG_DTS=fdts/fvp-base-gicv3-psci-dynamiq.dts DEBUG=1 \
        BL33=../u-boot/output/vexpress_aemv8a_semi/u-boot.bin  dtbs all fip
     
+        
+ Run FVP_CSS_SGM-775
+		-C css.trustedBootROMloader.fname=/home/yupluo01/work/dev_platform/arm-reference-platforms-sgm/output/sgm775/sgm775/tf-bl1.bin \
+      -C css.scp.ROMloader.fname=/home/yupluo01/work/dev_platform/arm-reference-platforms-sgm/output/sgm775/sgm775/scp-rom.bin \
+      -C soc.pl011_uart0.out_file=/home/yupluo01/work/dev_platform/arm-reference-platforms-sgm/output/sgm775/sgm775/uart0.log  \
+      -C soc.pl011_uart1.out_file=/home/yupluo01/work/dev_platform/arm-reference-platforms-sgm/output/sgm775/sgm775/uart1.log \
+      -C soc.pl011_uart0.unbuffered_output=1  -C config_id=0 -C displayController=2 -RSp -C css.cache_state_modelled=1 \
+      --data css.cluster0.cpu0=/home/yupluo01/work/dev_platform/arm-reference-platforms-sgm/output/sgm775/uInitrd-busybox.0x88000000@0x88000000  \
+      -C board.flashloader0.fname=/home/yupluo01/work/dev_platform/arm-reference-platforms-sgm/output/sgm775/sgm775/fip-uboot.bin \ 
+      --data css.cluster0.cpu0=/home/yupluo01/work/dev_platform/arm-reference-platforms-sgm/output/sgm775/sgm775/uImage.0x80080000.mobile_bb@0x80080000
+			
+         
     Build for DSU (ARMv8.2 ) cores
       	make CROSS_COMPILE=aarch64-linux-gnu- PLAT=fvp FVP_HW_CONFIG_DTS=fdts/fvp-base-gicv3-psci-dynamiq.dts \
             FVP_MAX_CPUS_PER_CLUSTER=8  HW_ASSISTED_COHERENCY=1  CTX_INCLUDE_AARCH32_REGS=0  USE_COHERENT_MEM=0 DEBUG=1  \
