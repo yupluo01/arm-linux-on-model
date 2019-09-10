@@ -76,4 +76,6 @@ Debug on DS-5 debugger
     boot wrapper
         git://git.kernel.org/pub/scm/linux/kernel/git/mark/boot-wrapper-aarch64.git
   
-./configure  --host=aarch64-linux-gnu- -enable-psci --enable-gicv3  --with-dtb=/home/yupluo01/oss/arm-trusted-firmware/build/fvp/debug/fdts/fvp-base-gicv3-psci-1t.dtb --with-kernel-dir=/home/yupluo01/oss/kernel/linux-stable/out_econt/
+./configure  --host=aarch64-linux-gnu- -enable-psci --enable-gicv3   \
+   --with-dtb=/home/yupluo01/oss/arm-trusted-firmware/build/fvp/debug/fdts/fvp-base-gicv3-psci-1t.dtb \
+   --with-kernel-dir=/home/yupluo01/oss/kernel/linux-stable/out_econt/
