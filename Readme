@@ -37,7 +37,7 @@ Build
       BL33=../u-boot/output/vexpress_aemv8a_semi/u-boot.bin  dtbs all fip
    
     make CROSS_COMPILE=aarch64-linux-gnu- PLAT=fvp FVP_HW_CONFIG_DTS=fdts/fvp-base-gicv3-psci-dynamiq.dts DEBUG=1 \
-       BL33=../u-boot/output/vexpress_aemv8a_semi/u-boot.bin  dtbs all fip
+       BL33=../u-boot/output/vexpress_aemv8a_semi/u-boot.bin CTX_INCLUDE_AARCH32_REGS=0 FVP_MAX_CPUS_PER_CLUSTER=8 dtbs all fip
     
         
  Run FVP_CSS_SGM-775
