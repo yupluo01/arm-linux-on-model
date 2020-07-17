@@ -14,6 +14,11 @@ CLUSTER0_NUM_CORES ?= 4
 CLUSTER1_NUM_CORES ?= 4
 CACHE_STATE_MODELLED ?= 1
 
+# ATF
+DTB = fvp-base-gicv3-psci-1t.dts
+DTB = fvp-base-gicv3-psci-dynamiq.dts
+DTB_IN_ATF = 0
+
 
 ifeq ($(TFTF), 1)
 	TARGETS = tftf 
@@ -36,8 +41,13 @@ TOP_DIR 		= $(shell pwd)
 MK_INC_DIR		= $(TOP_DIR)/build/inc/
 
 UBOOT_CONFIG 	= vexpress_aemv8a_semi_config 
-TF_CONFIG    	= PLAT=fvp \
-			FVP_HW_CONFIG_DTS=fdts/fvp-base-gicv3-psci-1t.dts \
+
+ifeq ($(DTB_IN_ATF), 0)
+	TF_CONFIG   = PLAT=fvp
+else
+	TF_CONFIG   = PLAT=fvp	\
+				FVP_HW_CONFIG_DTS=fdts/$(DTB)
+endif 
 
 include ${MK_INC_DIR}cmn.mk
 include ${MK_INC_DIR}u-boot.mk

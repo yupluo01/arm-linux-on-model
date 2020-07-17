@@ -1,43 +1,37 @@
 Get source code and prebuilt images
    1) Linux next (https://www.kernel.org/doc/man-pages/linux-next.html)
-   
         git clone https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git linux-next
         cd linux-next
         git remote add linux-next https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
-        
         git checkout master 
         git remote update
    2) u-boot 
        git clone http://git.denx.de/u-boot.git
-   
    3) arm trusted firmware 
        https://github.com/ARM-software/arm-trusted-firmware.git
    4) files system
-        Ubuntu
-        OE 
-        busybox
-        
+        Ubuntu,OE,busybox
    5) FVP
       FVP_Base_RevC-2xAEMv8A : 
-   6) gcc toolchain on ubuntu 19.04( aarch64 gcc 8.3)
+   6) gcc toolchain on ubuntu 20.04( aarch64 gcc 10)
 
 Alternative way to get code
      MANIFEST= lsk or latest
-     BRANCH= 19.01 or master
+     BRANCH= 20.01 or master
      repo init -u https://git.linaro.org/landing-teams/working/arm/manifest -b ${BRANCH} -m pinned-${MANIFEST}.xml
      repo sync -j8
    
 Build 
-  sudo apt install gcc-9-aarch64-linux-gnu
+  sudo apt install gcc-10-aarch64-linux-gnu
   
   1) busybox  
   2) u-boot 
   3) arm trusted firmare 
    make CROSS_COMPILE=aarch64-linux-gnu- PLAT=fvp FVP_HW_CONFIG_DTS=fdts/fvp-base-gicv3-psci-1t.dts DEBUG=1 \
-      BL33=../u-boot/output/vexpress_aemv8a_semi/u-boot.bin  dtbs all fip
+      BL33=../u-boot/out/u-boot.bin  dtbs all fip
    
     make CROSS_COMPILE=aarch64-linux-gnu- PLAT=fvp FVP_HW_CONFIG_DTS=fdts/fvp-base-gicv3-psci-dynamiq.dts DEBUG=1 \
-       BL33=../u-boot/output/vexpress_aemv8a_semi/u-boot.bin CTX_INCLUDE_AARCH32_REGS=0 FVP_MAX_CPUS_PER_CLUSTER=8 \
+       BL33=../u-boot/out/u-boot.bin CTX_INCLUDE_AARCH32_REGS=0 FVP_MAX_CPUS_PER_CLUSTER=8 \
        USE_COHERENT_MEM=0 HW_ASSISTED_COHERENCY=1 dtbs all fip
     
         
@@ -74,6 +68,9 @@ Debug on DS-5 debugger
     
     discard-symbol-file
 
+
+
+=======================================================================
 bootwrapper on fast model
 
     boot wrapper
@@ -103,35 +100,33 @@ RAMDISK
 
 root=/dev/vda2
 
-./configure  --host=aarch64-linux-gnu --with-kernel-dir=/home/yupluo01/work/juno/fvp-armv8-linaro-1710/linux/out/fvp/mobile_oe --with-dtb=/home/yupluo01/work/juno/fvp-armv8-linaro-1710/linux/out/fvp/mobile_oe/arch/arm64/boot/dts/arm/fvp-base-aemv8a-aemv8a.dtb  --enable-psci  --enable-gicv3 --with-cmdline='console=ttyAMA0 earlycon=pl011,0x1c090000 rdinit=/bin/sh rootwait'  --with-initrd=/home/yupluo01/work/juno/fvp-armv8-linaro-1710/output/fvp/uInitrd-oe.0x84000000
+./configure  --host=aarch64-linux-gnu --with-kernel-dir=~/linux/out/fvp/mobile_oe --with-dtb=~/fvp-base-aemv8a-aemv8a.dtb \
+		--enable-psci  --enable-gicv3 --with-cmdline='console=ttyAMA0 earlycon=pl011,0x1c090000 rdinit=/bin/sh rootwait' \
+		--with-initrd=~/output/fvp/uInitrd-oe.0x84000000
 
 FVP_Base_AEMv8A-AEMv8A -a linux-system.axf \
--C pctl.startup=0.0.0.0  -C bp.secure_memory=0 -C cluster0.NUM_CORES=1  -C bp.pl011_uart0.out_file=uart0.log  \
--C bp.pl011_uart1.out_file=uart1.log  -C bp.refcounter.non_arch_start_at_default=1 \
--C bp.virtioblockdevice.image_path=/home/yupluo01/work/juno/lt-vexpress64-openembedded_minimal-armv8-gcc-4.9_20150912-729.img
+	-C pctl.startup=0.0.0.0  -C bp.secure_memory=0 -C cluster0.NUM_CORES=1  -C bp.pl011_uart0.out_file=uart0.log  \
+	-C bp.pl011_uart1.out_file=uart1.log  -C bp.refcounter.non_arch_start_at_default=1 \
+	-C bp.virtioblockdevice.image_path=~/lt-vexpress64-openembedded_minimal-armv8-gcc-4.9_20150912-729.img
 
 
-/ # cat /proc/cmdline
-console=ttyAMA0 earlycon=pl011,0x1c090000 debug user_debug=31 systemd.log_target=null androidboot.hardware=fvpbase \
-	root=/dev/vda2 rw rootwait loglevel=9
-
+# cat /proc/cmdline
+console=ttyAMA0 earlycon=pl011,0x1c090000 debug user_debug=31 systemd.log_target=null androidboot.hardware=fvpbase root=/dev/vda2 rw rootwait loglevel=9
 
 FVP with Busybox FS
-
- FVP_Base_AEMv8A-AEMv8A     -C pctl.startup=0.0.0.0  -C bp.secure_memory=0         -C cluster0.NUM_CORES=1 \
- 	bp.pl011_uart0.out_file=uart0.log         -C bp.pl011_uart1.out_file=uart1.log   -C bp.secureflashloader.fname=bl1.bin \
-	-C bp.flashloader0.fname=fip.bin        --data cluster0.cpu0=Image@0x80080000  \
-	--data cluster0.cpu0=fvp-base-aemv8a-aemv8a.dtb@0x82000000    --data cluster0.cpu0=ramdisk.img@0x84000000  \
-	-C bp.ve_sysregs.mmbSiteDefault=0       -C bp.ve_sysregs.exit_on_shutdown=1                   
+	FVP_Base_AEMv8A-AEMv8A -C pctl.startup=0.0.0.0  -C bp.secure_memory=0 -C cluster0.NUM_CORES=1 \
+		-C bp.pl011_uart0.out_file=uart0.log -C bp.pl011_uart1.out_file=uart1.log -C bp.secureflashloader.fname=bl1.bin \
+		-C bp.flashloader0.fname=fip.bin --data cluster0.cpu0=Image@0x80080000  \
+		--data cluster0.cpu0=fvp-base-aemv8a-aemv8a.dtb@0x82000000  --data cluster0.cpu0=ramdisk.img@0x84000000  \
+		-C bp.ve_sysregs.mmbSiteDefault=0  -C bp.ve_sysregs.exit_on_shutdown=1                   
 
 FVP with OE FS
-
- /home/yupluo01/work/fastmodel/4079-Models-Linux64_GCC-5.4/FVP_Base_AEMv8A-AEMv8A     -C pctl.startup=0.0.0.0  \
- -C bp.secure_memory=0     -C cluster0.NUM_CORES=4                 -C cluster1.NUM_CORES=4     -C cache_state_modelled=0  \
- -C bp.pl011_uart0.untimed_fifos=1         -C bp.pl011_uart0.out_file=uart0-1514955038709420783.log       \
- -C bp.pl011_uart1.out_file=uart1-1514955038709420783.log     -C bp.secureflashloader.fname=bl1.bin     \
- -C bp.flashloader0.fname=fip.bin     --data cluster0.cpu0=Image@0x80080000   \
- --data cluster0.cpu0=fvp-base-aemv8a-aemv8a.dtb@0x82000000     --data cluster0.cpu0=ramdisk.img@0x84000000  \
- -C bp.ve_sysregs.mmbSiteDefault=0     -C bp.ve_sysregs.exit_on_shutdown=1    \
- -C bp.virtioblockdevice.image_path=/home/yupluo01/work/juno/fvp-armv8-linaro-1710/lt-vexpress64-openembedded_minimal-armv8-gcc-4.9_20150912-729.img
+	FVP_Base_AEMv8A-AEMv8A -C pctl.startup=0.0.0.0  \
+		-C bp.secure_memory=0 -C cluster0.NUM_CORES=4 -C cluster1.NUM_CORES=4 -C cache_state_modelled=0  \
+		-C bp.pl011_uart0.untimed_fifos=1 -C bp.pl011_uart0.out_file=uart0.log  \
+		-C bp.pl011_uart1.out_file=uart1.log -C bp.secureflashloader.fname=bl1.bin \
+		-C bp.flashloader0.fname=fip.bin --data cluster0.cpu0=Image@0x80080000 \
+		--data cluster0.cpu0=fvp-base-aemv8a-aemv8a.dtb@0x82000000 --data cluster0.cpu0=ramdisk.img@0x84000000  \
+		-C bp.ve_sysregs.mmbSiteDefault=0 -C bp.ve_sysregs.exit_on_shutdown=1  \
+		-C bp.virtioblockdevice.image_path=lt-vexpress64-openembedded_minimal-armv8-gcc-4.9_20150912-729.img
  
