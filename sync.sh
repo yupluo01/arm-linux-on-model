@@ -12,8 +12,10 @@ git checkout master
 git remote update
 cd ..
 
-#mkdir -p optee
-#cd optee
-#git clone -b master https://github.com/OP-TEE/optee_os.git
-#git clone -b master https://github.com/OP-TEE/optee_os.git
-#cd ../
+mkdir -p optee
+cd optee
+git clone -b master https://github.com/OP-TEE/optee_os.git
+git clone -b master https://github.com/OP-TEE/optee_client.git
+git clone -b master https://github.com/OP-TEE/optee_test.git
+git clone -b master https://github.com/OP-TEE/optee_linuxdriver.git
+cd ../
