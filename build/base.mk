@@ -1,6 +1,6 @@
 MODEL  ?= FVP_Base_RevC-2xAEMv8A
 TFTF   ?= 0
-TTBR   ?= 1
+TTBR   ?= 0
 OPTEE  ?= 0
 
 ARCH_HAS_ARMV8_1 ?= 1
@@ -10,6 +10,7 @@ ARCH_HAS_ARMV8_4 ?= 1
 ARCH_HAS_ARMV8_5 ?= 1
 ARCH_HAS_ARMV8_6 ?= 1
 HAS_BTI ?= 1 
+MTE_LEVEL ?= 2 
 CLUSTER0_NUM_CORES ?= 4
 CLUSTER1_NUM_CORES ?= 4
 CACHE_STATE_MODELLED ?= 1
@@ -59,13 +60,15 @@ ARCH_PARAMS = \
 	     -C cluster0.has_arm_v8-5=$(ARCH_HAS_ARMV8_5)  \
 	     -C cluster0.has_arm_v8-6=$(ARCH_HAS_ARMV8_6)  \
 	     -C cluster0.has_branch_target_exception=$(HAS_BTI) \
+	     -C cluster0.memory_tagging_support_level=$(MTE_LEVEL)  \
 	     -C cluster1.has_arm_v8-1=$(ARCH_HAS_ARMV8_1)  \
 	     -C cluster1.has_arm_v8-2=$(ARCH_HAS_ARMV8_2)  \
 	     -C cluster1.has_arm_v8-3=$(ARCH_HAS_ARMV8_3)  \
 	     -C cluster1.has_arm_v8-4=$(ARCH_HAS_ARMV8_4)  \
 	     -C cluster1.has_arm_v8-5=$(ARCH_HAS_ARMV8_5)  \
 	     -C cluster1.has_arm_v8-6=$(ARCH_HAS_ARMV8_6)  \
-	     -C cluster1.has_branch_target_exception=$(HAS_BTI)
+	     -C cluster1.has_branch_target_exception=$(HAS_BTI) \
+	     -C cluster1.memory_tagging_support_level=$(MTE_LEVEL)  \
 
 MODEL_PARAMS = \
 	       -C pctl.startup=0.0.0.0 \
