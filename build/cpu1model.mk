@@ -1,3 +1,5 @@
+### ARMv8.0-A CPU build
+
 #FVP revC
 #make CROSS_COMPILE=aarch64-linux-gnu- PLAT=fvp FVP_HW_CONFIG_DTS=fdts/fvp-base-gicv3-psci-1t.dts DEBUG=1 BL33=../u-boot/output/vexpress_aemv8a_semi/u-boot.bin  dtbs all fip
 
@@ -7,25 +9,16 @@
 #v8.2 cpu
 #make CROSS_COMPILE=aarch64-linux-gnu- PLAT=fvp FVP_HW_CONFIG_DTS=fdts/fvp-base-gicv3-psci-dynamiq.dts DEBUG=1 BL33=../u-boot/output/vexpress_aemv8a_semi/u-boot.bin CTX_INCLUDE_AARCH32_REGS=0 FVP_MAX_CPUS_PER_CLUSTER=8 USE_COHERENT_MEM=0 HW_ASSISTED_COHERENCY=1 dtbs all fip
 
-#MODEL=FVP_Base_Cortex-A73x4-A53x4
-#MODEL=FVP_Base_Cortex-A55
-#MODEL=FVP_Base_Cortex-A55x1
-#MODEL=FVP_Base_Cortex-A55x4
-#MODEL=FVP_Base_Cortex-A55x4+Cortex-A75x4
-#MODEL=FVP_Base_Cortex-A55x2+Cortex-A75x2
-#MODEL=FVP_Base_Cortex-A55x4+Cortex-A76x2
-#MODEL=FVP_Base_Cortex-A76x4
-#MODEL=FVP_Base_Cortex-A75x4
+#MODEL=FVP_Base_Cortex-A35x4
 #MODEL=FVP_Base_Cortex-A53x4
-#MODEL   = FVP_Base_Kleinx1
-#MODEL   = FVP_Base_Kleinx2
-#MODEL   = FVP_Base_Kleinx4
-MODEL   = FVP_Base_Kleinx8
-#MODEL   = FVP_Base_Matterhornx1
-#MODEL   = FVP_Base_Matterhornx2
-#MODEL   = FVP_Base_Matterhornx4
+#MODEL=FVP_Base_Cortex-A57x4
+#MODEL=FVP_Base_Cortex-A72x4
+MODEL=FVP_Base_Cortex-A72x4-A53x4
+#MODEL=FVP_Base_Cortex-A73x4-A53x4
+#MODEL=FVP_Base_Cortex-A73x4-A53x4-CCI500
+
 TFTF   ?= 0
-TTBR   ?= 1
+TTBR   ?= 0
 OPTEE  ?= 0
 
 CACHE_STATE_MODELLED ?= 1
@@ -52,8 +45,7 @@ MK_INC_DIR		= $(TOP_DIR)/build/inc/
 
 UBOOT_CONFIG 	= vexpress_aemv8a_semi_config 
 TF_CONFIG    	= PLAT=fvp \
-			FVP_HW_CONFIG_DTS=fdts/fvp-base-gicv3-psci-dynamiq.dts \
-			CTX_INCLUDE_AARCH32_REGS=0 FVP_MAX_CPUS_PER_CLUSTER=8 USE_COHERENT_MEM=0 HW_ASSISTED_COHERENCY=1
+			FVP_HW_CONFIG_DTS=fdts/fvp-base-gicv3-psci.dts FVP_MAX_CPUS_PER_CLUSTER=4
 
 include ${MK_INC_DIR}cmn.mk
 include ${MK_INC_DIR}u-boot.mk

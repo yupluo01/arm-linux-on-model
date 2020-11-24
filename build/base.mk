@@ -1,3 +1,5 @@
+### ARMv8-A base model
+
 MODEL  ?= FVP_Base_RevC-2xAEMv8A
 TFTF   ?= 0
 TTBR   ?= 0

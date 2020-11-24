@@ -1,29 +1,31 @@
-#MODEL = FVP_Base_Cortex-A57x4-A53x4
-#MODEL = FVP_Base_Cortex-A73x4-A53x4
-#MODEL = FVP_Base_Cortex-A73x4-A53x4-CCI500
-#MODEL = FVP_Base_Cortex-A76x4
-#MODEL = FVP_Base_Neoverse-N1x4
-#MODEL = FVP_Base_Kleinx4
-#MODEL = FVP_Base_Kleinx8
-#MODEL = FVP_Base_Matterhornx4
-MODEL  = FVP_Base_Cortex-A55x4+Cortex-A76x2
-DSU_CPU = 1
-TTBR   ?= 1
+### ARMv8.2 processors
+#FVP revC
+#make CROSS_COMPILE=aarch64-linux-gnu- PLAT=fvp FVP_HW_CONFIG_DTS=fdts/fvp-base-gicv3-psci-1t.dts DEBUG=1 BL33=../u-boot/output/vexpress_aemv8a_semi/u-boot.bin  dtbs all fip
+
+#v8.2 cpu
+#make CROSS_COMPILE=aarch64-linux-gnu- PLAT=fvp FVP_HW_CONFIG_DTS=fdts/fvp-base-gicv3-psci-dynamiq.dts DEBUG=1 BL33=../u-boot/output/vexpress_aemv8a_semi/u-boot.bin CTX_INCLUDE_AARCH32_REGS=0 FVP_MAX_CPUS_PER_CLUSTER=8 USE_COHERENT_MEM=0 HW_ASSISTED_COHERENCY=1 dtbs all fip
+
+#MODEL=FVP_Base_Cortex-A55
+#MODEL=FVP_Base_Cortex-A55x1
+#MODEL=FVP_Base_Cortex-A55x4
+#MODEL=FVP_Base_Cortex-A55x4+Cortex-A75x4
+#MODEL=FVP_Base_Cortex-A55x2+Cortex-A75x2
+#MODEL=FVP_Base_Cortex-A55x4+Cortex-A76x2
+#MODEL=FVP_Base_Cortex-A76x4
+#MODEL=FVP_Base_Cortex-A75x4
+
+#MODEL   = FVP_Base_Kleinx1
+#MODEL   = FVP_Base_Kleinx2
+#MODEL   = FVP_Base_Kleinx4
+#MODEL   = FVP_Base_Kleinx8
+#MODEL   = FVP_Base_Matterhornx1
+#MODEL   = FVP_Base_Matterhornx2
+#MODEL   = FVP_Base_Matterhornx4
 TFTF   ?= 0
+TTBR   ?= 0
 OPTEE  ?= 0
 
 CACHE_STATE_MODELLED ?= 1
-
-# ATF
-ifeq ($(DSU_CPU), 1)
-DTB			= fvp-base-gicv3-psci-dynamiq.dts
-TF_CONFIG   = PLAT=fvp FVP_HW_CONFIG_DTS=fdts/$(DTB) FVP_MAX_CPUS_PER_CLUSTER=8 \
-			  USE_COHERENT_MEM=0 HW_ASSISTED_COHERENCY=1 CTX_INCLUDE_AARCH32_REGS=0
-else
-DTB			= fvp-base-gicv3-psci-1t.dts
-TF_CONFIG   = PLAT=fvp FVP_HW_CONFIG_DTS=fdts/$(DTB)
-
-endif
 
 ifeq ($(TFTF), 1)
 	TARGETS = tftf 
@@ -46,7 +48,9 @@ TOP_DIR 		= $(shell pwd)
 MK_INC_DIR		= $(TOP_DIR)/build/inc/
 
 UBOOT_CONFIG 	= vexpress_aemv8a_semi_config 
-
+TF_CONFIG    	= PLAT=fvp \
+			FVP_HW_CONFIG_DTS=fdts/fvp-base-gicv3-psci-dynamiq.dts \
+			CTX_INCLUDE_AARCH32_REGS=0 FVP_MAX_CPUS_PER_CLUSTER=8 USE_COHERENT_MEM=0 HW_ASSISTED_COHERENCY=1
 
 include ${MK_INC_DIR}cmn.mk
 include ${MK_INC_DIR}u-boot.mk
@@ -56,6 +60,8 @@ include ${MK_INC_DIR}arm-tf.mk
 include ${MK_INC_DIR}linux.mk
 include ${MK_INC_DIR}busybox.mk
 include ${MK_INC_DIR}ramdisk.mk
+
+#disk_param=" -C bp.virtioblockdevice.image_path=$DISK "
 
 MODEL_PARAMS = \
 	       -C pctl.startup=0.0.0.0 \
@@ -71,18 +77,20 @@ MODEL_PARAMS = \
 	       -C bp.pl011_uart1.out_file=$(TOP_DIR)/uart1.log \
 	       -C bp.ve_sysregs.mmbSiteDefault=0 \
 	       -C bp.ve_sysregs.exit_on_shutdown=1  \
-	       
+	       $(disk_param) \
+	
 run:
 	$(MODEL) $(MODEL_PARAMS) 
 
 ds5:
-	@echo "Model params in DS-5:"
+	@echo "Model params in Arm DS:"
 	@echo $(MODEL_PARAMS)
 	@echo "" 
-	@echo "\r\nDebug symbol in DS-5:"
+	@echo "\r\nDebug symbol in Arm DS:"
 	@echo "add-symbol-file \"$(TOP_DIR)/arm-tf/build/fvp/debug/bl1/bl1.elf\" EL3:0"
 	@echo "add-symbol-file \"$(TOP_DIR)/arm-tf/build/fvp/debug/bl31/bl31.elf\" EL3:0"
 	@echo "add-symbol-file \"$(TOP_DIR)/arm-tf/build/fvp/debug/bl2/bl2.elf\" EL1S:0"
 	@echo "add-symbol-file \"$(TOP_DIR)/tftf/build/fvp/debug/tftf/tftf.elf\" EL2N:0"
 	@echo "add-symbol-file \"$(TOP_DIR)/linux/out/vmlinux\" EL1N:0"
+
 
