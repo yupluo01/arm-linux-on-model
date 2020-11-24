@@ -1,3 +1,9 @@
+=== simple steps ===
+./sync.sh # download software
+make -f build/cpu1model.mk   # build for v8.0 processors
+make -f build/cpu1model.mk run
+
+
 Get source code and prebuilt images
    1) Linux next (https://www.kernel.org/doc/man-pages/linux-next.html)
         git clone https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git linux-next
