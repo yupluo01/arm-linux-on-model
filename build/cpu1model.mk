@@ -12,8 +12,9 @@
 #MODEL=FVP_Base_Cortex-A35x4
 #MODEL=FVP_Base_Cortex-A53x4
 #MODEL=FVP_Base_Cortex-A57x4
+MODEL=FVP_Base_Cortex-A57x2-A53x4
 #MODEL=FVP_Base_Cortex-A72x4
-MODEL=FVP_Base_Cortex-A72x4-A53x4
+#MODEL=FVP_Base_Cortex-A72x4-A53x4
 #MODEL=FVP_Base_Cortex-A73x4-A53x4
 #MODEL=FVP_Base_Cortex-A73x4-A53x4-CCI500
 

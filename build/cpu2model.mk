@@ -14,6 +14,9 @@
 #MODEL=FVP_Base_Cortex-A76x4
 #MODEL=FVP_Base_Cortex-A75x4
 
+#MODEL=FVP_Base_Cortex-A65x4
+MODEL=FVP_Base_Neoverse-E1x4
+
 #MODEL   = FVP_Base_Kleinx1
 #MODEL   = FVP_Base_Kleinx2
 #MODEL   = FVP_Base_Kleinx4

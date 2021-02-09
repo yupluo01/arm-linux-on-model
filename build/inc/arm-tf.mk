@@ -8,7 +8,7 @@ arm-tf.build:
 	export CROSS_COMPILE=$(CROSS_COMPILE) ; \
 	cd arm-tf; \
 	make $(TF_CONFIG) ENABLE_STACK_PROTECTOR=strong $(TBBR_CFG) DEBUG=1 BL33=$(BL33) dtbs all fip
-	#V=1
+	V=1
 
 arm-tf.clean:
 	rm arm-tf/build -rf 
