@@ -1,0 +1,11 @@
+.gitignore
+*.swp
+*.log
+arm-tf/
+busybox/
+linux/
+mbedtls/
+ramdisk/
+u-boot/
+
+
