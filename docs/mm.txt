@@ -1,0 +1,14 @@
+to explore linux mm
+
+1) physical memory on FVP_Base_RevC-2xAEMv8A
+
+
+2) memory layout for software stack
+
+
+3) physical memory for Linux kernel
+
+
+4)Linux kernel memory
+
+
